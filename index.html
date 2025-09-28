@@ -204,7 +204,7 @@
     document.addEventListener('DOMContentLoaded', () => {
         
         // --- CONFIGURAÇÃO ---
-        const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwL5a-iLq3bGr3n8X_tA_Azt0n21LdY-e9A0j0d8s5G-g7pS2xJ6v9Z9c8j/exec'; // <-- SUBSTITUA PELO SEU URL
+        const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbx2cqp8rzWkx1M09MdpDzdOrytMyDtFMaOZxM1y4Eg9ib28YH68gsWWAMXA_orGvoCR/exec';
 
         // --- ELEMENTOS DO DOM ---
         const panels = { start: document.getElementById('start-screen'), quiz: document.getElementById('quiz-screen'), };
@@ -403,11 +403,14 @@
             formData.append('name', name);
             formData.append('email', email);
             formData.append('score', `${score}/${quizData.length}`);
-            formData.append('date', new Date().toISOString());
-
+            
             fetch(GOOGLE_SCRIPT_URL, { method: 'POST', body: formData})
                 .then(response => response.json())
-                .then(data => console.log('Success:', data))
+                .then(data => {
+                    if(data.result !== "success") {
+                       console.warn('Google Script Error:', data.error);
+                    }
+                })
                 .catch(error => console.error('Error:', error))
                 .finally(() => {
                     submitLeadBtn.disabled = false;
