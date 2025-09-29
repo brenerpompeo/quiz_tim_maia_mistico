@@ -204,7 +204,7 @@
     document.addEventListener('DOMContentLoaded', () => {
         
         // --- CONFIGURAÇÃO ---
-        const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbx2cqp8rzWkx1M09MdpDzdOrytMyDtFMaOZxM1y4Eg9ib28YH68gsWWAMXA_orGvoCR/exec';
+        const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxXYTF4x7ytzqmfDluaZlSfFy7wxxlZTCza6z3qShSV5ZogfFSjr3R3pp3fGkRmEHd9/exec';
 
         // --- ELEMENTOS DO DOM ---
         const panels = { start: document.getElementById('start-screen'), quiz: document.getElementById('quiz-screen'), };
@@ -243,9 +243,8 @@
         ];
         
         const resultsByScore = [
-            { title: "Turista Musical", description: "Você passou por aqui, mas não se aprofundou. Que tal começar a jornada agora?" }, // 0
-            { title: "Fã de Rádio", description: "Você conhece os grandes sucessos, mas a história completa ainda é um mistério." }, // 1-2
-            { title: "Iniciante Cósmico", description: "Sua jornada está apenas começando! Há um vasto universo sobre o Síndico para explorar." }, // 3-4
+            { title: "Turista Musical", description: "Você passou por aqui, mas não se aprofundou. Que tal começar a jornada agora?" }, // 0-2
+            { title: "Fã de Rádio", description: "Você conhece os grandes sucessos, mas a história completa ainda é um mistério." }, // 3-4
             { title: "Estudante da Soul Music", description: "Você já está no caminho certo e entende momentos importantes da carreira dele." }, // 5-6
             { title: "Discípulo do Síndico", description: "Muito bom! Você conhece bem a história e os conceitos por trás do nosso Tim." }, // 7-8
             { title: "O PRÓPRIO SÍNDICO!", description: "Impressionante! Seu conhecimento é total. Você é o Síndico do universo Tim Maia!" } // 9
