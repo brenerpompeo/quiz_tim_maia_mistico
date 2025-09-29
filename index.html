@@ -56,12 +56,10 @@
             border-color: #3b82f6; /* blue-500 */
             background-color: rgba(59, 130, 246, 0.1);
         }
-        /* Garantir que o conteúdo do modal seja rolável em telas pequenas */
         #result-step-content {
             max-height: 85vh;
             overflow-y: auto;
         }
-        /* Scrollbar Estilizado */
         #result-step-content::-webkit-scrollbar {
             width: 6px;
         }
@@ -112,18 +110,14 @@
         <!-- Tela 2: Quiz -->
         <div id="quiz-screen" class="panel w-full max-w-4xl z-10">
             <div class="bg-white/70 dark:bg-slate-800/70 backdrop-blur-xl border border-black/10 dark:border-white/10 rounded-3xl p-4 sm:p-6 shadow-2xl flex flex-col gap-4 h-[90vh] max-h-[700px]">
-                <!-- Placar Horizontal -->
                 <div class="flex-shrink-0">
                     <div class="flex justify-between items-center mb-2">
                         <h3 class="font-bold text-lg text-slate-700 dark:text-slate-300">Placar</h3>
                         <button id="stop-game-btn" class="btn bg-rose-600 hover:bg-rose-500 text-white text-xs font-semibold py-1.5 px-3 rounded-full transition">Parar Jogo</button>
                     </div>
-                    <div id="prize-bar-container" class="grid grid-cols-9 gap-1.5">
-                        <!-- Bolinhas do placar -->
-                    </div>
+                    <div id="prize-bar-container" class="grid grid-cols-9 gap-1.5"></div>
                 </div>
 
-                <!-- Conteúdo Principal -->
                 <div class="flex-grow flex flex-col justify-center items-center text-center">
                     <div class="flex-shrink-0 mx-auto mb-4">
                         <svg class="w-48 sm:w-56" viewBox="0 0 200 50" xmlns="http://www.w3.org/2000/svg">
@@ -137,11 +131,8 @@
                     </div>
                 </div>
                 
-                <!-- Opções e Ações -->
                 <div class="flex-shrink-0">
-                    <div id="options-container" class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                        <!-- Opções -->
-                    </div>
+                    <div id="options-container" class="grid grid-cols-1 sm:grid-cols-2 gap-3"></div>
                 </div>
             </div>
         </div>
@@ -189,7 +180,13 @@
                     <div class="mt-6 bg-slate-200 dark:bg-slate-900/50 p-6 rounded-xl border border-slate-300 dark:border-slate-700">
                          <h3 class="font-bold text-lg text-slate-900 dark:text-white">Aprofunde seu Conhecimento</h3>
                          <p class="mt-2 text-slate-600 dark:text-slate-300 text-sm">Use seu cupom! Transforme sua curiosidade em sabedoria com nosso guia completo.</p>
-                         <a href="https://pay.hotmart.com/J101435163B" target="_blank" rel="noopener noreferrer" class="btn inline-block mt-4 w-full bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-3 px-6 rounded-full transition-all duration-300 transform hover:scale-105 shadow-lg">Quero o Guia Completo Agora</a>
+                         <div class="mt-4 grid grid-cols-1 gap-3">
+                            <a id="result-ebook-btn" href="#" target="_blank" rel="noopener noreferrer" class="btn inline-block w-full bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-3 px-6 rounded-full transition-all duration-300 transform hover:scale-105 shadow-lg">Quero o Guia Completo Agora</a>
+                            <a id="result-combo-btn" href="#" target="_blank" rel="noopener noreferrer" class="btn inline-block w-full bg-amber-500 hover:bg-amber-400 text-white font-bold py-3 px-6 rounded-full transition-all duration-300 transform hover:scale-105 shadow-lg text-center leading-tight">
+                                <span class="font-bold text-sm">✨ OFERTA ESPECIAL</span>
+                                <span class="block">Quero o Combo (Guia + Audiobook)</span>
+                            </a>
+                         </div>
                     </div>
                  </div>
                  <div class="bg-slate-200 dark:bg-slate-700/50 px-6 py-4 border-t border-slate-300 dark:border-slate-700 flex justify-center">
@@ -205,6 +202,8 @@
         
         // --- CONFIGURAÇÃO ---
         const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxXYTF4x7ytzqmfDluaZlSfFy7wxxlZTCza6z3qShSV5ZogfFSjr3R3pp3fGkRmEHd9/exec';
+        const EBOOK_CHECKOUT_URL = "https://pay.hotmart.com/J101435163B";
+        const COMBO_CHECKOUT_URL = "https://pay.hotmart.com/T101793347B"; 
 
         // --- ELEMENTOS DO DOM ---
         const panels = { start: document.getElementById('start-screen'), quiz: document.getElementById('quiz-screen'), };
@@ -228,6 +227,8 @@
         const resultDescription = document.getElementById('result-description');
         const restartQuizBtn = document.getElementById('restart-quiz-btn');
         const couponSection = document.getElementById('coupon-section');
+        const resultEbookBtn = document.getElementById('result-ebook-btn');
+        const resultComboBtn = document.getElementById('result-combo-btn');
         
         // --- DADOS DO QUIZ ---
         const quizData = [
@@ -268,12 +269,12 @@
             prizeBarContainer.innerHTML = '';
             for(let i = 0; i < quizData.length; i++) {
                 const dot = document.createElement('div');
-                let dotClass = 'bg-slate-300 dark:bg-slate-600'; // Padrão (não respondido)
+                let dotClass = 'bg-slate-300 dark:bg-slate-600';
                 if (i < currentQuestionIndex) {
-                    dotClass = answerLog[i] ? 'bg-emerald-500' : 'bg-rose-500'; // Certo ou Errado
+                    dotClass = answerLog[i] ? 'bg-emerald-500' : 'bg-rose-500';
                 }
                  if (i === currentQuestionIndex && !selectedOption) {
-                    dotClass = 'bg-amber-400 dark:bg-amber-500'; // Pergunta atual
+                    dotClass = 'bg-amber-400 dark:bg-amber-500';
                 }
                 dot.className = `h-2 rounded-full transition-colors duration-300 ${dotClass}`;
                 prizeBarContainer.appendChild(dot);
@@ -308,10 +309,9 @@
         };
 
         const selectAnswer = (selectedButton) => {
-            if (selectedOption) return; // Impede múltiplos cliques
+            if (selectedOption) return;
             selectedOption = selectedButton;
 
-            // Desabilita todas as opções
             Array.from(optionsContainer.children).forEach(button => button.disabled = true);
 
             const answer = quizData[currentQuestionIndex].answer;
@@ -320,7 +320,6 @@
             answerLog.push(isCorrect);
             if (isCorrect) score++;
 
-            // Mostra o feedback visual
             if (!isCorrect) {
                 selectedButton.classList.add('!bg-rose-500/20', '!border-rose-500');
                 selectedButton.style.animation = 'shake-incorrect 0.5s ease';
@@ -334,7 +333,6 @@
             
             updatePrizeBar();
 
-            // Avança para a próxima pergunta ou finaliza
             setTimeout(() => {
                 currentQuestionIndex++;
                 if (currentQuestionIndex < quizData.length) {
@@ -364,7 +362,6 @@
         };
         
         const showFinalResult = () => {
-             // Lógica de pontuação para 9 perguntas
             let resultIndex;
             if (score <= 2) resultIndex = 0;
             else if (score <= 4) resultIndex = 1;
@@ -377,7 +374,6 @@
             resultTitle.textContent = resultData.title;
             resultDescription.textContent = resultData.description;
 
-            // 70% de acertos de 9 perguntas é 6.3. Arredondamos para 7.
             if (score >= 7) {
                 couponSection.classList.remove('hidden');
             }
@@ -440,7 +436,7 @@
             };
             
             participantCounterEl.textContent = count;
-            setInterval(updateCounter, (Math.random() * 5000) + 3000); // Update every 3-8 seconds
+            setInterval(updateCounter, (Math.random() * 5000) + 3000);
         };
 
         // --- EVENT LISTENERS ---
@@ -455,6 +451,8 @@
         // --- INICIALIZAÇÃO ---
         showPanel('start');
         setupParticipantCounter();
+        if (resultEbookBtn) resultEbookBtn.href = EBOOK_CHECKOUT_URL;
+        if (resultComboBtn) resultComboBtn.href = COMBO_CHECKOUT_URL;
     });
     </script>
 </body>
